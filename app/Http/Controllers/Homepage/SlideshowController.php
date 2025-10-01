@@ -38,14 +38,17 @@ class SlideshowController extends Controller
         // dd($request);
         $request->validate([
             'slideshow_image' => 'required|mimes:jpg,webp,png,jpeg',
+            'mobile_slideshow_image' => 'required|mimes:jpg,webp,png,jpeg',
             'caption' => 'required|max:100',
             'body' => 'required|max:200',
         ]);
 
         $slider_image_path = $this->uploadProfileImage($request->file('slideshow_image'));
+        $mobile_slider_image_path = $this->uploadProfileImage($request->file('mobile_slideshow_image'));
 
         $sliders = new Slideshow();
         $sliders->slideshow_image = $slider_image_path;
+        $sliders->mobile_slideshow_image = $mobile_slider_image_path;
         $sliders->caption = $request->input('caption');
         $sliders->body = $request->input('body');
         $sliders->uploaded_by = Auth::user()->name;
@@ -104,6 +107,7 @@ class SlideshowController extends Controller
         // }
         $request->validate([
             'slideshow_image' => 'nullable|mimes:jpg,webp,png,jpeg',
+            'mobile_slideshow_image' => 'nullable|mimes:jpg,webp,png,jpeg',
             'caption' => 'required|max:100',
             'body' => 'required|max:200',
         ]);
@@ -113,11 +117,19 @@ class SlideshowController extends Controller
             $imagePath = $this->uploadProfileImage($request->file('slideshow_image'));
         }
 
+        if(!is_null($request->file('mobile_slideshow_image')))
+        {
+            $mobileImagePath = $this->uploadProfileImage($request->file('mobile_slideshow_image'));
+        }
+
+
 
         $slider->caption = $request->input('caption');
         $slider->body = $request->input('body');
         !isset($imagePath) ?
         '' : $slider->slideshow_image = $imagePath;
+        !isset($mobileImagePath) ?
+        '' : $slider->mobile_slideshow_image = $mobileImagePath;
 
         $slider->save();
         $sliders = Slideshow::all();
