@@ -11,6 +11,7 @@ class Slideshow extends Model
 
     protected $fillable = [
         'slideshow_image',
+        'mobile_slideshow_image',
         'caption',
         'body',
         'uploaded_by'

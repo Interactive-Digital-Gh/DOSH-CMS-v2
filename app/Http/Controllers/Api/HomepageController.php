@@ -12,7 +12,7 @@ class HomepageController extends Controller
 
     public function showSlideShowData()
     {
-        $slideshow = Slideshow::select('slideshow_image', 'caption', 'body')->where('published', '1')->get();
+        $slideshow = Slideshow::select('slideshow_image', 'mobile_slideshow_image', 'caption', 'body')->where('published', '1')->get();
         // foreach($slideshows as $slideshow){
         //    $slideshow['slideshow_image'] = 'https://doshcms.interactivedigital.com.gh/'.$slideshow['slideshow_image'];
         // }
