@@ -114,7 +114,7 @@ public function visitsThisMonth()
 
         $dailyVisits = collect($uniqueVisitorsPerDay);
 
-        if ($request->wantsJson()) {
+        if ($request->wantsJson() && $request->input('chart') === 'visits') {
             return response()->json([
                 'month' => $dailyVisits->keys(),
                 'visits' => $dailyVisits->values(),
@@ -124,57 +124,65 @@ public function visitsThisMonth()
         }
 
         // === 2. Page Visit Counts (cleaned URLs) ===
+        $barMonth = $request->input('bar_month', $currentMonth);
+        $barYear = $request->input('bar_year', $currentYear);
+
         $allowed = [
-        'home',
-        'about',
-        'productservices',
-        'contact',
-        'serviceproviders',
-        'register',
-        'insurance',
-        'about',
-        'errorpage',
-        'popup',
-        'terms',
-        'login',
-        // 'about-us.php',
-        // …add any others you want shown individually
-    ];
+            'home',
+            'about',
+            'productservices',
+            'contact',
+            'serviceproviders',
+            'register',
+            'insurance',
+            'errorpage',
+            'popup',
+            'terms',
+            'login',
+        ];
 
-    // 2) Pull your raw counts, clean off the domain, and turn each visit into a “label”
-    $visitsData = PageVisit::selectRaw('page_url, COUNT(*) as count')
-        ->groupBy('page_url')
-        ->get()
-        ->map(function($item) use ($allowed) {
-            // strip off your domain variants
-            $cleaned = str_replace([
-                'https://www.0800dosh.me/',
-                'https://0800dosh.me/',
-                'https://www.0800dosh.me',
-                'https://0800dosh.me',
-            ], '', $item->page_url);
+        $visitsData = PageVisit::selectRaw('page_url, COUNT(*) as count')
+            ->whereMonth('created_at', $barMonth)
+            ->whereYear('created_at', $barYear)
+            ->groupBy('page_url')
+            ->get()
+            ->map(function($item) use ($allowed) {
+                $cleaned = str_replace([
+                    'https://www.0800dosh.me/',
+                    'https://0800dosh.me/',
+                    'https://www.0800dosh.me',
+                    'https://0800dosh.me',
+                ], '', $item->page_url);
 
-            // grab the first path segment (or empty ⇒ home)
-            $seg = explode('/', ltrim($cleaned, '/'))[0] ?? '';
-            $label = $seg === '' ? 'home' : $seg;
+                $seg = explode('/', ltrim($cleaned, '/'))[0] ?? '';
+                $label = $seg === '' ? 'home' : $seg;
 
-            // if it’s not in our whitelist, call it “unknown”
-            if ( ! in_array($label, $allowed) ) {
-                $label = 'unknown';
-            }
+                if (!in_array($label, $allowed)) {
+                    $label = 'unknown';
+                }
 
-            return [
-                'label' => $label,
-                'count' => $item->count,
-            ];
-        });
+                return [
+                    'label' => $label,
+                    'count' => $item->count,
+                ];
+            });
 
-    // 3) Now regroup by label and sum up the counts
-    $pageData = $visitsData
-        ->groupBy('label')
-        ->map(function($group) {
-            return $group->sum('count');
-        });
+        $pageData = $visitsData
+            ->groupBy('label')
+            ->map(function($group) {
+                return $group->sum('count');
+            });
+
+        $barSelectedDate = Carbon::create($barYear, $barMonth, 1);
+
+        if ($request->wantsJson() && $request->input('chart') === 'pages') {
+            return response()->json([
+                'pages' => $pageData->keys(),
+                'page_visits' => $pageData->values(),
+                'currentMonthName' => $barSelectedDate->format('F'),
+                'currentYear' => $barYear,
+            ]);
+        }
 
 
 

@@ -419,6 +419,29 @@ $(function() {
       data: data,
       options: options
     });
+
+    var barMonthFilter = document.getElementById('barMonthFilter');
+    if (barMonthFilter) {
+      barMonthFilter.addEventListener('change', function() {
+        var selectedMonth = this.value;
+        var selectedYear = this.getAttribute('data-year');
+
+        fetch('/?bar_month=' + selectedMonth + '&bar_year=' + selectedYear + '&chart=pages', {
+          headers: {
+            'Accept': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+          }
+        })
+        .then(function(res) { return res.json(); })
+        .then(function(data) {
+          document.getElementById('barChartTitle').innerText = 'Number of Visits Per Page: ' + data.currentMonthName + ' ' + data.currentYear;
+          barChart.data.labels = data.pages;
+          barChart.data.datasets[0].data = data.page_visits;
+          barChart.update();
+        })
+        .catch(function(err) { console.error('Error fetching bar data:', err); });
+      });
+    }
   }
 
   if ($("#lineChart").length) {
@@ -480,7 +503,7 @@ $(function() {
         var selectedMonth = this.value;
         var selectedYear = this.getAttribute('data-year');
         
-        fetch('/?month=' + selectedMonth + '&year=' + selectedYear, {
+        fetch('/?month=' + selectedMonth + '&year=' + selectedYear + '&chart=visits', {
           headers: {
             'Accept': 'application/json',
             'X-Requested-With': 'XMLHttpRequest'

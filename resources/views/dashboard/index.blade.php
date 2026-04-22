@@ -25,7 +25,7 @@
   <link rel="stylesheet" href="{{ asset('vendors/jquery-bar-rating/fontawesome-stars.css') }}">
   <!-- End plugin css for this page -->
   <!-- inject:css -->
-  <link rel="stylesheet" href="{{ asset('css/style.css') . '?v=2.0' }}">
+  <link rel="stylesheet" href="{{ asset('css/style.css') . '?v=2.1' }}">
   <!-- endinject -->
   <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon_io/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon_io/favicon-32x32.png">
@@ -68,13 +68,16 @@
                 <div class="card-body">
                   <div class="d-flex justify-content-between align-items-center mb-3">
                     <h4 class="card-title mb-0" id="siteVisitsTitle">Site Visits: {{ $currentMonthName }} {{ $currentYear }}</h4>
-                    <select id="monthFilter" class="form-control form-control-sm w-auto" data-year="{{ $currentYear }}">
-                        @for ($m = 1; $m <= 12; $m++)
-                            <option value="{{ $m }}" {{ $currentMonth == $m ? 'selected' : '' }}>
-                                {{ \Carbon\Carbon::create()->month($m)->format('F') }}
-                            </option>
-                        @endfor
-                    </select>
+                    <div class="chart-filter-wrapper">
+                      <i class="mdi mdi-calendar-month"></i>
+                      <select id="monthFilter" class="chart-month-filter" data-year="{{ $currentYear }}">
+                          @for ($m = 1; $m <= 12; $m++)
+                              <option value="{{ $m }}" {{ $currentMonth == $m ? 'selected' : '' }}>
+                                  {{ \Carbon\Carbon::create()->month($m)->format('F') }}
+                              </option>
+                          @endfor
+                      </select>
+                    </div>
                   </div>
                   <input type="hidden" id="areachart1-month" value='@json($month)'>
                   <input type="hidden" id="areachart1-visits" value='@json($visits)'>
@@ -97,7 +100,19 @@
             <div class="col-lg-12 grid-margin stretch-card">
                 <div class="card">
                   <div class="card-body">
-                    <h4 class="card-title">Number of Visits Per Page</h4>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                      <h4 class="card-title mb-0" id="barChartTitle">Number of Visits Per Page: {{ $currentMonthName }} {{ $currentYear }}</h4>
+                      <div class="chart-filter-wrapper">
+                        <i class="mdi mdi-calendar-month"></i>
+                        <select id="barMonthFilter" class="chart-month-filter" data-year="{{ $currentYear }}">
+                            @for ($m = 1; $m <= 12; $m++)
+                                <option value="{{ $m }}" {{ $currentMonth == $m ? 'selected' : '' }}>
+                                    {{ \Carbon\Carbon::create()->month($m)->format('F') }}
+                                </option>
+                            @endfor
+                        </select>
+                      </div>
+                    </div>
                     <input type="hidden" id="barchart1-pages" value='@json($pages)'>
                     <input type="hidden" id="barchart1-visits" value='@json($page_visits)'>
                     <canvas id="barChart"></canvas>
@@ -372,7 +387,7 @@
 
     {{-- Chart  --}}
   <script src="{{ asset('vendors/chart.js/Chart.min.js') }}"></script>
-  <script src="{{ asset('js/chart.js?v=2.2') }}"></script>
+  <script src="{{ asset('js/chart.js?v=2.3') }}"></script>
     <!-- End custom js for this page-->
 
   {{-- Toastify Notifications  --}}
