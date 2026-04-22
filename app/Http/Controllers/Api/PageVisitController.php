@@ -44,13 +44,21 @@ class PageVisitController extends Controller
                 'user_agent' => $userAgent,
             ]);
 
-            // Optional: Reject if referer doesn't match
-            if (
-                !str_contains($referer, 'https://www.0800dosh.me') &&
-                !str_contains($referer, 'https://0800dosh.me')
-                )
-            {
+            // Validate request origin: check both origin and referer headers
+            $allowedDomains = ['https://www.0800dosh.me', 'https://0800dosh.me'];
+
+            $isAllowed = false;
+            foreach ($allowedDomains as $domain) {
+                if (($origin && str_contains($origin, $domain)) ||
+                    ($referer && str_contains($referer, $domain))) {
+                    $isAllowed = true;
+                    break;
+                }
+            }
+
+            if (!$isAllowed) {
                 Log::warning('Unauthorized page visit attempt blocked', [
+                    'origin' => $origin,
                     'referer' => $referer,
                     'ip' => $userIp,
                 ]);

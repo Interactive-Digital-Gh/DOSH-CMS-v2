@@ -18,14 +18,14 @@
 
           <li class="nav-item {{ Route::currentRouteNamed('dashboard') ? 'active' : '' }}">
             <a class="nav-link" href="/">
-              <i class="icon-bar-graph-2 menu-icon"></i>
+              <i class="mdi mdi-view-dashboard menu-icon"></i>
               <span class="menu-title">Dashboard</span>
             </a>
           </li>
 
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#homepage" aria-expanded="{{ Route::currentRouteNamed('home-sections.edit') || Route::currentRouteNamed('slideshow.create') ? 'true' : 'false' }}" aria-controls="homepage">
-              <i class="icon-disc menu-icon"></i>
+              <i class="mdi mdi-home menu-icon"></i>
               <span class="menu-title">Homepage</span>
               <i class="menu-arrow"></i>
             </a>
@@ -41,14 +41,14 @@
 
           <li class="nav-item {{ Route::currentRouteNamed('aboutus-sections.edit') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('aboutus-sections.edit', 'whoweare') }}">
-              <i class="icon-head menu-icon"></i>
+              <i class="mdi mdi-information-outline menu-icon"></i>
               <span class="menu-title">About Us</span>
             </a>
           </li>
 
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#pns" aria-expanded="{{ Route::currentRouteNamed('pns-section') || Route::currentRouteNamed('pns-header') ? 'true' : 'false' }}" aria-controls="pns">
-              <i class="icon-content-left menu-icon"></i>
+              <i class="mdi mdi-cube-outline menu-icon"></i>
               <span class="menu-title">Products & Services</span>
               <i class="menu-arrow"></i>
             </a>
@@ -66,7 +66,7 @@
 
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#hsp" aria-expanded="{{ Route::currentRouteNamed('hsp-titles') || Route::currentRouteNamed('hsp-header') || Route::currentRouteNamed('hsp-list') ? 'true' : 'false' }}" aria-controls="hsp">
-              <i class="icon-content-right menu-icon"></i>
+              <i class="mdi mdi-hospital-building menu-icon"></i>
               <span class="menu-title">Service Providers</span>
               <i class="menu-arrow"></i>
             </a>
@@ -84,14 +84,14 @@
 
           <li class="nav-item {{ Route::currentRouteNamed('contact-page') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('contact-page') }}">
-              <i class="icon-mail menu-icon"></i>
+              <i class="mdi mdi-phone-classic menu-icon"></i>
               <span class="menu-title">Contact Page</span>
             </a>
           </li>
 
           <li class="nav-item {{ Route::currentRouteNamed('privacy-statement') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('privacy-statement') }}">
-              <i class="icon-paper menu-icon"></i>
+              <i class="mdi mdi-shield-check-outline menu-icon"></i>
               <span class="menu-title">Privacy Statement</span>
             </a>
           </li>

@@ -18,7 +18,17 @@ class CorsMiddleware
         // return $next($request);
         $response = $next($request);
 
-        $response->headers->set('Access-Control-Allow-Origin', 'https://www.0800dosh.me/');
+        $allowedOrigins = [
+            'https://www.0800dosh.me',
+            'https://0800dosh.me',
+        ];
+
+        $origin = $request->headers->get('Origin');
+
+        if (in_array($origin, $allowedOrigins)) {
+            $response->headers->set('Access-Control-Allow-Origin', $origin);
+        }
+
         $response->headers->set('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
         $response->headers->set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 

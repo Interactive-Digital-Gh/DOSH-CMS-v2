@@ -46,7 +46,7 @@
               <div class="brand-logo">
                 <img src="{{ asset('images/dosh_logo.png') }}" alt="logo">
               </div>
-              <h4>Welcome back!??@</h4>
+              <h4>Welcome back!</h4>
               <h6 class="font-weight-light">Happy to see you again!</h6>
               <form class="pt-3" method="POST" action="{{ route('login.custom') }}">
                 @csrf
