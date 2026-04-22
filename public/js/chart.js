@@ -473,6 +473,29 @@ $(function() {
       data: areaData,
       options: areaOptions
     });
+
+    var monthFilter = document.getElementById('monthFilter');
+    if (monthFilter) {
+      monthFilter.addEventListener('change', function() {
+        var selectedMonth = this.value;
+        var selectedYear = this.getAttribute('data-year');
+        
+        fetch('/?month=' + selectedMonth + '&year=' + selectedYear, {
+          headers: {
+            'Accept': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+          }
+        })
+        .then(function(res) { return res.json(); })
+        .then(function(data) {
+          document.getElementById('siteVisitsTitle').innerText = 'Site Visits: ' + data.currentMonthName + ' ' + data.currentYear;
+          areaChart.data.labels = data.month;
+          areaChart.data.datasets[0].data = data.visits;
+          areaChart.update();
+        })
+        .catch(function(err) { console.error('Error fetching data:', err); });
+      });
+    }
   }
 
   if ($("#scatterChart").length) {

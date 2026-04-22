@@ -67,8 +67,8 @@
               <div class="card">
                 <div class="card-body">
                   <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h4 class="card-title mb-0">Site Visits: {{ $currentMonthName }} {{ $currentYear }}</h4>
-                    <select class="form-control form-control-sm w-auto" onchange="window.location.href='?month=' + this.value + '&year={{ $currentYear }}'">
+                    <h4 class="card-title mb-0" id="siteVisitsTitle">Site Visits: {{ $currentMonthName }} {{ $currentYear }}</h4>
+                    <select id="monthFilter" class="form-control form-control-sm w-auto" data-year="{{ $currentYear }}">
                         @for ($m = 1; $m <= 12; $m++)
                             <option value="{{ $m }}" {{ $currentMonth == $m ? 'selected' : '' }}>
                                 {{ \Carbon\Carbon::create()->month($m)->format('F') }}
@@ -372,7 +372,7 @@
 
     {{-- Chart  --}}
   <script src="{{ asset('vendors/chart.js/Chart.min.js') }}"></script>
-  <script src="{{ asset('js/chart.js?v=2') }}"></script>
+  <script src="{{ asset('js/chart.js?v=2.2') }}"></script>
     <!-- End custom js for this page-->
 
   {{-- Toastify Notifications  --}}

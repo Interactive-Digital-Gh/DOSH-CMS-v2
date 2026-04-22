@@ -114,6 +114,15 @@ public function visitsThisMonth()
 
         $dailyVisits = collect($uniqueVisitorsPerDay);
 
+        if ($request->wantsJson()) {
+            return response()->json([
+                'month' => $dailyVisits->keys(),
+                'visits' => $dailyVisits->values(),
+                'currentMonthName' => $selectedDate->format('F'),
+                'currentYear' => $currentYear,
+            ]);
+        }
+
         // === 2. Page Visit Counts (cleaned URLs) ===
         $allowed = [
         'home',
