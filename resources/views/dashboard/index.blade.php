@@ -66,7 +66,16 @@
             <div class="col-lg-6 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
-                  <h4 class="card-title">Current Month: {{ $currentMonth }}</h4>
+                  <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="card-title mb-0">Site Visits: {{ $currentMonthName }} {{ $currentYear }}</h4>
+                    <select class="form-control form-control-sm w-auto" onchange="window.location.href='?month=' + this.value + '&year={{ $currentYear }}'">
+                        @for ($m = 1; $m <= 12; $m++)
+                            <option value="{{ $m }}" {{ $currentMonth == $m ? 'selected' : '' }}>
+                                {{ \Carbon\Carbon::create()->month($m)->format('F') }}
+                            </option>
+                        @endfor
+                    </select>
+                  </div>
                   <input type="hidden" id="areachart1-month" value='@json($month)'>
                   <input type="hidden" id="areachart1-visits" value='@json($visits)'>
                   <canvas id="areaChart"></canvas>
