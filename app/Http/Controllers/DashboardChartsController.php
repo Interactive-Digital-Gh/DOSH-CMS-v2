@@ -124,7 +124,7 @@ public function visitsThisMonth()
         }
 
         // === 2. Page Visit Counts (cleaned URLs) ===
-        $barMonth = $request->input('bar_month', $currentMonth);
+        $barMonth = $request->input('bar_month', 'all');
         $barYear = $request->input('bar_year', $currentYear);
 
         $allowed = [
@@ -141,9 +141,14 @@ public function visitsThisMonth()
             'login',
         ];
 
-        $visitsData = PageVisit::selectRaw('page_url, COUNT(*) as count')
-            ->whereMonth('created_at', $barMonth)
-            ->whereYear('created_at', $barYear)
+        $pageVisitQuery = PageVisit::selectRaw('page_url, COUNT(*) as count');
+
+        if ($barMonth !== 'all') {
+            $pageVisitQuery->whereMonth('created_at', $barMonth)
+                           ->whereYear('created_at', $barYear);
+        }
+
+        $visitsData = $pageVisitQuery
             ->groupBy('page_url')
             ->get()
             ->map(function($item) use ($allowed) {
@@ -173,14 +178,13 @@ public function visitsThisMonth()
                 return $group->sum('count');
             });
 
-        $barSelectedDate = Carbon::create($barYear, $barMonth, 1);
+        $barMonthLabel = $barMonth === 'all' ? 'All Time' : Carbon::create($barYear, $barMonth, 1)->format('F') . ' ' . $barYear;
 
         if ($request->wantsJson() && $request->input('chart') === 'pages') {
             return response()->json([
                 'pages' => $pageData->keys(),
                 'page_visits' => $pageData->values(),
-                'currentMonthName' => $barSelectedDate->format('F'),
-                'currentYear' => $barYear,
+                'barMonthLabel' => $barMonthLabel,
             ]);
         }
 

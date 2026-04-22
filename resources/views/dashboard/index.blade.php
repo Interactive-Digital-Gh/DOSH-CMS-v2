@@ -101,12 +101,13 @@
                 <div class="card">
                   <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                      <h4 class="card-title mb-0" id="barChartTitle">Number of Visits Per Page: {{ $currentMonthName }} {{ $currentYear }}</h4>
+                      <h4 class="card-title mb-0" id="barChartTitle">Number of Visits Per Page: All Time</h4>
                       <div class="chart-filter-wrapper">
                         <i class="mdi mdi-calendar-month"></i>
                         <select id="barMonthFilter" class="chart-month-filter" data-year="{{ $currentYear }}">
+                            <option value="all" selected>All Time</option>
                             @for ($m = 1; $m <= 12; $m++)
-                                <option value="{{ $m }}" {{ $currentMonth == $m ? 'selected' : '' }}>
+                                <option value="{{ $m }}">
                                     {{ \Carbon\Carbon::create()->month($m)->format('F') }}
                                 </option>
                             @endfor
@@ -387,7 +388,7 @@
 
     {{-- Chart  --}}
   <script src="{{ asset('vendors/chart.js/Chart.min.js') }}"></script>
-  <script src="{{ asset('js/chart.js?v=2.3') }}"></script>
+  <script src="{{ asset('js/chart.js?v=2.4') }}"></script>
     <!-- End custom js for this page-->
 
   {{-- Toastify Notifications  --}}

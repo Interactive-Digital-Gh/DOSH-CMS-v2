@@ -434,7 +434,7 @@ $(function() {
         })
         .then(function(res) { return res.json(); })
         .then(function(data) {
-          document.getElementById('barChartTitle').innerText = 'Number of Visits Per Page: ' + data.currentMonthName + ' ' + data.currentYear;
+          document.getElementById('barChartTitle').innerText = 'Number of Visits Per Page: ' + data.barMonthLabel;
           barChart.data.labels = data.pages;
           barChart.data.datasets[0].data = data.page_visits;
           barChart.update();
