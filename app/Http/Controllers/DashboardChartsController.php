@@ -243,6 +243,12 @@ public function visitsThisMonth()
                 $model = trim($m[1]);
                 // Strip "Build/..." suffix if present
                 $model = preg_replace('/\s*Build\/.*$/i', '', $model);
+
+                // Ignore extremely short or junk model names like "K" or "wv"
+                if (strlen($model) <= 2 || strtolower($model) === 'wv' || strtolower($model) === 'k') {
+                    return 'Android Device';
+                }
+
                 $friendly = $this->mapAndroidModel($model);
                 return $friendly;
             }
@@ -270,6 +276,10 @@ public function visitsThisMonth()
         if (!$agent->isMobile() && !$agent->isTablet()) {
             $platform = $agent->platform() ?: 'Unknown OS';
             $browser  = $agent->browser()  ?: 'Unknown Browser';
+
+            if (str_contains($platform, 'Unknown') && str_contains($browser, 'Unknown')) {
+                return 'Other Devices';
+            }
 
             // Shorten platform names
             if (str_contains($platform, 'OS X') || str_contains($platform, 'macOS')) {
