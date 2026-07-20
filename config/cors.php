@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['https://www.0800dosh.me', 'https://0800dosh.me'],
+    'allowed_origins' => ['https://www.0800dosh.me', 'https://0800dosh.me', 'https://www.dosh.coop', 'https://dosh.coop'],
 
     'allowed_origins_patterns' => [],
 
