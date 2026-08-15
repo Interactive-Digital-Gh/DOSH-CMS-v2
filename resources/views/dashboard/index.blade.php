@@ -336,9 +336,9 @@
                           @foreach ($userActivity as $log)
                         <tr>
                             <td>
-                                <img src="{{ $log->user->profile_picture ?? '' }}" width="40">
+                                <img src="{{ asset($log->user->profile_picture ?? 'images/faces/user-icon.webp') }}" width="40">
                             </td>
-                            <td>{{ $log->user->name ?? 'Unknown' }}</td>
+                            <td>{{ $log->user->name ?? 'Guest' }}</td>
                             <td>{{ $log->device }}</td>
                             <td>{{ $log->created_at->format('d/m/Y') }}</td>
                             <td>{{ $log->created_at->format('g:i A') }}</td>
