@@ -45,7 +45,12 @@ class PageVisitController extends Controller
             ]);
 
             // Validate request origin: check both origin and referer headers
-            $allowedDomains = ['https://www.0800dosh.me', 'https://0800dosh.me'];
+            $allowedDomains = [
+                'https://www.0800dosh.me',
+                'https://0800dosh.me',
+                'https://www.dosh.coop',
+                'https://dosh.coop',
+            ];
 
             $isAllowed = false;
             foreach ($allowedDomains as $domain) {
