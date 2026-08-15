@@ -8,6 +8,7 @@ use App\Http\Controllers\DashboardChartsController;
 use App\Http\Controllers\Homepage\HomeSectionsController;
 use App\Http\Controllers\Homepage\SlideshowController;
 use App\Http\Controllers\Misc\MiscController;
+use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\PnS\PnSController;
 use App\Http\Controllers\PnS\PnSHeaderController;
 use App\Http\Controllers\ServiceProvidersPage\HSPsController;
@@ -18,6 +19,11 @@ use App\Models\ServiceProvidersHeader;
 Route::get('/login', [AuthController::class, 'index'])->name('login');
 Route::post('custom-login', [AuthController::class, 'customLogin'])->name('login.custom');
 Route::get('signout', [AuthController::class, 'signOut'])->name('signout');
+
+Route::get('forgot-password', [PasswordResetController::class, 'showForgotForm'])->name('password.request');
+Route::post('forgot-password', [PasswordResetController::class, 'sendResetLink'])->name('password.email');
+Route::get('reset-password/{token}', [PasswordResetController::class, 'showResetForm'])->name('password.reset');
+Route::post('reset-password', [PasswordResetController::class, 'resetPassword'])->name('password.update');
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/', function () {
